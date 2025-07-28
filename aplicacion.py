@@ -6,9 +6,6 @@ from modulos.recuperador import recuperar_contexto
 from modulos.generador import generar_orientacion
 from utilidades.plantillas_prompts import prompt_tutor
 
-# ===========================
-# 🎨 ESTILOS PERSONALIZADOS
-# ===========================
 st.set_page_config(page_title="TutorRAG", page_icon="📚", layout="wide")
 
 CUSTOM_CSS = """
@@ -59,28 +56,18 @@ CUSTOM_CSS = """
 """
 st.markdown(CUSTOM_CSS, unsafe_allow_html=True)
 
-# ===========================
-# 🌟 ENCABEZADO PRINCIPAL
-# ===========================
 st.markdown("<div class='main-title'>📚 TutorRAG</div>", unsafe_allow_html=True)
 st.markdown("<div class='sub-title'>Asistente pedagógico inteligente para apoyar la evaluación auténtica</div>", unsafe_allow_html=True)
 st.markdown("<hr>", unsafe_allow_html=True)
 
-# ===========================
-# INFO SOBRE MULTIPÁGINA
-# ===========================
 st.sidebar.info(
     "📄 Usa el menú lateral para navegar entre páginas.\n\n"
     "✅ **Página principal:** Consultas al tutor.\n"
     "✅ **Crear Tarea:** Genera tareas en PDF automáticamente."
 )
 
-# ===========================
-# 📂 SECCIÓN LAYOUT
-# ===========================
 col1, col2 = st.columns([1, 2])
 
-# === COL1: GESTIÓN DEL CORPUS ===
 with col1:
     st.subheader("📂 Gestión del Corpus")
     st.write("Sube documentos curriculares en PDF para que el tutor los utilice.")
@@ -106,9 +93,8 @@ with col1:
     if "historial" not in st.session_state:
         st.session_state.historial = []
 
-    # Mostrar historial si existe
     if st.session_state.historial:
-        for h in reversed(st.session_state.historial[-5:]):  # últimas 5 preguntas
+        for h in reversed(st.session_state.historial[-5:]):
             st.markdown(
                 f"<div class='history-box'><b>❓ {h['pregunta']}</b><br>💡 {h['respuesta']}</div>",
                 unsafe_allow_html=True
@@ -116,7 +102,6 @@ with col1:
     else:
         st.info("Todavía no hay historial de preguntas.")
 
-# === COL2: INTERACCIÓN CON EL TUTOR ===
 with col2:
     st.subheader("🤔 Haz una consulta")
     pregunta = st.text_input("✏️ Escribe tu pregunta sobre el contenido curricular:")
@@ -125,7 +110,7 @@ with col2:
         if pregunta.strip():
             with st.spinner("🔍 Buscando en el currículo y generando orientación..."):
                 contexto = recuperar_contexto(pregunta)
-                # ✅ Generar el prompt dinámico del tutor
+
                 prompt = prompt_tutor(contexto, pregunta)
                 respuesta = generar_orientacion(prompt)
 
@@ -134,16 +119,12 @@ with col2:
                     f"<div class='answer-box'>{respuesta}</div>", unsafe_allow_html=True
                 )
 
-                # Guardar en historial
                 st.session_state.historial.append(
                     {"pregunta": pregunta, "respuesta": respuesta}
                 )
         else:
             st.warning("⚠️ Escribe una pregunta antes de continuar.")
 
-# ===========================
-# 🔗 BOTÓN EXTRA PARA RECORDAR CREAR TAREA
-# ===========================
 st.markdown("<hr>", unsafe_allow_html=True)
 st.write(
     "¿Eres docente? 👉 Ve a la página **Crear Tarea** desde el menú lateral para generar actividades y descargarlas en PDF."

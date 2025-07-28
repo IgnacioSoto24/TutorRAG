@@ -8,34 +8,28 @@ st.set_page_config(page_title="Crear tarea", page_icon="📝")
 st.title("📝 Crear Tarea Automáticamente")
 st.write("Genera automáticamente preguntas a partir del **objetivo** y el **título de la tarea**.")
 
-# Entradas del docente
 titulo = st.text_input("📌 Título de la tarea")
 objetivo = st.text_area("🎯 Objetivo de aprendizaje")
 
-# === Paso 1: Generar preguntas automáticamente ===
 if st.button("🤖 Generar preguntas automáticamente"):
     if not titulo.strip() or not objetivo.strip():
         st.warning("⚠️ Escribe al menos un objetivo y un título para generar preguntas.")
     else:
         with st.spinner("Generando preguntas según el objetivo..."):
-            # ✅ Crear el prompt para tareas
             prompt = prompt_tarea(objetivo, titulo)
             preguntas_generadas = generar_orientacion(prompt)
 
         st.success("✅ Preguntas generadas automáticamente")
-        # ✅ Mostramos las preguntas para que el docente pueda editarlas si quiere
         st.session_state["preguntas_tarea"] = st.text_area(
             "✏️ Edita las preguntas si es necesario:",
             preguntas_generadas,
             height=200,
         )
 
-# === Paso 2: Si ya hay preguntas, habilitar PDF ===
 if "preguntas_tarea" in st.session_state and st.session_state["preguntas_tarea"]:
     if st.button("📥 Descargar tarea en PDF"):
         preguntas_texto = st.session_state["preguntas_tarea"]
 
-        # Crear el PDF con título, objetivo y preguntas
         pdf = FPDF()
         pdf.add_page()
         pdf.set_font("Arial", "B", 16)

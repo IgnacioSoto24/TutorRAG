@@ -3,7 +3,6 @@ plantillas_prompts.py
 Aquí guardamos plantillas de prompts reutilizables para TutorRAG.
 """
 
-# Prompt para orientar al estudiante
 def prompt_tutor(contexto, pregunta):
     return f"""
 Eres un tutor pedagógico del sistema educativo chileno.
@@ -24,7 +23,6 @@ Pregunta del estudiante:
 Ahora orienta al estudiante.
 """
 
-# Prompt para generar preguntas automáticas de tareas
 def prompt_tarea(objetivo, titulo):
     return f"""
 Eres un experto en diseño de actividades educativas.

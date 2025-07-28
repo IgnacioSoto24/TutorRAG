@@ -1,6 +1,5 @@
 from langchain.llms import Ollama
 
-# Usa el modelo descargado en Ollama (ejemplo: llama3)
 modelo_llama = Ollama(model="llama3")
 
 def generar_orientacion(prompt):

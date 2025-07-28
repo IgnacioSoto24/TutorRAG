@@ -10,8 +10,7 @@ def recuperar_contexto(pregunta, k=3):
     
     vector_pregunta = np.array(modelo_emb.embed_query(pregunta)).astype("float32").reshape(1, -1)
     distancias, indices = indice.search(vector_pregunta, k)
-    
-    # Cargar metadatos
+
     from numpy import load
     metadatos = load("indice/metadatos.npy", allow_pickle=True)
     contexto = [metadatos[i]["contenido"] for i in indices[0] if i < len(metadatos)]
